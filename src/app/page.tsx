@@ -2,434 +2,493 @@
 
 import { useState } from "react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-type City = string;
-type ServiceKey = "Passageiro" | "Encomenda" | "Aeroporto" | "Hospital";
+// ---- ICONS ----
+const IconLocation = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+  </svg>
+);
+const IconPerson = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>
+  </svg>
+);
+const IconDoc = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+    <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+  </svg>
+);
+const IconClock = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </svg>
+);
+const IconChevron = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m9 18 6-6-6-6"/>
+  </svg>
+);
+const IconWhatsApp = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+);
+const IconCopy = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </svg>
+);
+const IconClose = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+const IconPresent = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>
+  </svg>
+);
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-const CITIES: City[] = [
-  "Tangará da Serra",
-  "Arenápolis",
-  "Santo Afonso",
-  "Nova Marilândia",
-  "Nortelândia",
-];
+// ---- SERVICE ICONS ----
+const IconTaxi = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="#FACC15"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>;
+const IconPackage = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FB923C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>;
+const IconPlane = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="#60A5FA"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>;
+const IconHospital = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F87171" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6v4"/><path d="M14 8h-4"/><path d="M18 10h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M2 18h2"/><path d="M20 18h2"/></svg>;
 
-const SERVICES: { key: ServiceKey; label: string; icon: string }[] = [
-  { key: "Passageiro", label: "Passageiro", icon: "🚗" },
-  { key: "Encomenda", label: "Encomenda", icon: "📦" },
-  { key: "Aeroporto", label: "Aeroporto", icon: "✈️" },
-  { key: "Hospital", label: "Hospital / Consulta", icon: "🏥" },
-];
-
-const WHATSAPP_NUMBER = "5565996595006";
-
-// ─── Message Builder ──────────────────────────────────────────────────────────
-function buildMessage(city: City | null, service: ServiceKey | null): string {
-  const c = city ?? "[CIDADE]";
-
-  switch (service) {
-    case "Passageiro":
-      return `Olá André, quero reservar uma viagem para ${c}.
-
-Serviço: Passageiro
-Dia:
-Horário:
-Nome:
-Ponto de saída:`;
-
-    case "Encomenda":
-      return `Olá André, quero enviar uma encomenda para ${c}.
-
-Serviço: Encomenda
-Origem:
-Destino:
-Tipo de encomenda:
-Nome:`;
-
-    case "Aeroporto":
-      return `Olá André, quero consultar uma viagem para aeroporto.
-
-Destino: ${c}
-Dia:
-Horário:
-Quantidade de pessoas:
-Nome:`;
-
-    case "Hospital":
-      return `Olá André, quero reservar uma viagem para consulta/hospital.
-
-Cidade: ${c}
-Dia:
-Horário da consulta:
-Nome:
-Ponto de saída:`;
-
-    default:
-      return city
-        ? `Olá André, tenho interesse em uma corrida para ${c}. Pode me ajudar?`
-        : "Olá André, tenho interesse em seus serviços. Pode me ajudar?";
-  }
-}
-
-// ─── Icons (SVG puro — sem Lucide) ───────────────────────────────────────────
-function WhatsAppIcon() {
+// ---- INPUT FIELD COMPONENT ----
+function Field({ label, value, onChange, type = "text", placeholder }: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  placeholder?: string;
+}) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-    </svg>
-  );
-}
-
-function CarIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="20" height="20">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-    </svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="16" height="16">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  );
-}
-
-function CopyIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="16" height="16">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-    </svg>
-  );
-}
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
-function HeroBadge() {
-  return (
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase"
-      style={{ background: "rgba(34,197,94,0.12)", color: "#22C55E", border: "1px solid rgba(34,197,94,0.25)" }}>
-      <span className="badge-dot w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
-      Online para reservas
-    </span>
-  );
-}
-
-function ScheduleBlock() {
-  const schedules = [
-    { label: "Saída manhã", time: "05h20" },
-    { label: "Retorno manhã", time: "12h00" },
-    { label: "Saída tarde", time: "13h00" },
-    { label: "Retorno tarde", time: "16h30" },
-  ];
-
-  return (
-    <div className="glass-card p-4">
-      <div className="flex items-center gap-2 mb-3">
-        <ClockIcon />
-        <span className="text-sm font-semibold" style={{ color: "#006BFF" }}>
-          Horários — Seg a Sáb
-        </span>
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        {schedules.map((s) => (
-          <div key={s.label} className="rounded-xl p-2.5 text-center"
-            style={{ background: "rgba(0,107,255,0.08)", border: "1px solid rgba(0,107,255,0.15)" }}>
-            <div className="text-xs text-white/50 mb-0.5">{s.label}</div>
-            <div className="text-base font-bold tracking-wider" style={{ color: "#006BFF" }}>
-              {s.time}
-            </div>
-          </div>
-        ))}
-      </div>
+    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+      <label style={{ fontSize: "12px", fontWeight: 600, color: "#94A3B8", letterSpacing: "0.03em", textTransform: "uppercase" }}>
+        {label}
+      </label>
+      <input
+        type={type}
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder || label}
+        className="input-glass"
+      />
     </div>
   );
 }
 
-interface CityCardProps {
-  cities: City[];
-  selected: City | null;
-  onSelect: (city: City) => void;
-}
-
-function CityCard({ cities, selected, onSelect }: CityCardProps) {
-  return (
-    <div className="glass-card p-5">
-      <h2 className="text-base font-bold mb-1 text-white">📍 Para onde você vai?</h2>
-      <p className="text-xs text-white/50 mb-4">Selecione a cidade de destino</p>
-      <div className="flex flex-col gap-2.5">
-        {cities.map((city) => {
-          const isSelected = selected === city;
-          return (
-            <button
-              key={city}
-              onClick={() => onSelect(city)}
-              className="btn-option w-full text-left px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all"
-              style={{
-                background: isSelected
-                  ? "linear-gradient(135deg, #006BFF, #003B8F)"
-                  : "rgba(255,255,255,0.05)",
-                border: isSelected
-                  ? "1px solid rgba(0,107,255,0.6)"
-                  : "1px solid rgba(255,255,255,0.08)",
-                color: isSelected ? "#FFFFFF" : "rgba(255,255,255,0.7)",
-                boxShadow: isSelected ? "0 4px 20px rgba(0,107,255,0.35)" : "none",
-                transform: isSelected ? "scale(1.01)" : "scale(1)",
-              }}
-            >
-              <span className="flex items-center gap-3">
-                <span
-                  className="w-2 h-2 rounded-full shrink-0"
-                  style={{ background: isSelected ? "#FFFFFF" : "rgba(255,255,255,0.3)" }}
-                />
-                {city}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-interface ServiceCardProps {
-  services: typeof SERVICES;
-  selected: ServiceKey | null;
-  onSelect: (service: ServiceKey) => void;
-}
-
-function ServiceCard({ services, selected, onSelect }: ServiceCardProps) {
-  return (
-    <div className="glass-card p-5">
-      <h2 className="text-base font-bold mb-1 text-white">⚡ O que você precisa?</h2>
-      <p className="text-xs text-white/50 mb-4">Selecione o tipo de serviço</p>
-      <div className="grid grid-cols-2 gap-2.5">
-        {services.map((s) => {
-          const isSelected = selected === s.key;
-          return (
-            <button
-              key={s.key}
-              onClick={() => onSelect(s.key)}
-              className="btn-option flex flex-col items-center gap-2 px-3 py-4 rounded-2xl font-semibold text-xs transition-all"
-              style={{
-                background: isSelected
-                  ? "linear-gradient(135deg, #006BFF, #003B8F)"
-                  : "rgba(255,255,255,0.05)",
-                border: isSelected
-                  ? "1px solid rgba(0,107,255,0.6)"
-                  : "1px solid rgba(255,255,255,0.08)",
-                color: isSelected ? "#FFFFFF" : "rgba(255,255,255,0.65)",
-                boxShadow: isSelected ? "0 4px 20px rgba(0,107,255,0.35)" : "none",
-                transform: isSelected ? "scale(1.03)" : "scale(1)",
-              }}
-            >
-              <span className="text-xl">{s.icon}</span>
-              <span className="text-center leading-tight">{s.label}</span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-interface MessagePreviewCardProps {
-  message: string;
-  onCopy: () => void;
-  copied: boolean;
-}
-
-function MessagePreviewCard({ message, onCopy, copied }: MessagePreviewCardProps) {
-  return (
-    <div className="glass-card p-5">
-      <div className="flex items-center justify-between mb-3">
-        <div>
-          <h2 className="text-base font-bold text-white">💬 Mensagem pronta</h2>
-          <p className="text-xs text-white/50 mt-0.5">Enviada automaticamente ao clicar</p>
-        </div>
-        <button
-          onClick={onCopy}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
-          style={{
-            background: copied ? "rgba(34,197,94,0.15)" : "rgba(0,107,255,0.12)",
-            border: copied ? "1px solid rgba(34,197,94,0.4)" : "1px solid rgba(0,107,255,0.3)",
-            color: copied ? "#22C55E" : "#006BFF",
-          }}
-        >
-          <CopyIcon />
-          {copied ? "Copiado!" : "Copiar"}
-        </button>
-      </div>
-      <div
-        className="rounded-2xl p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap"
-        style={{
-          background: "rgba(0,0,0,0.35)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          color: "rgba(255,255,255,0.85)",
-          minHeight: "120px",
-        }}
-      >
-        {message}
-      </div>
-    </div>
-  );
-}
-
-function WhatsAppButton({ onClick, disabled }: { onClick: () => void; disabled: boolean }) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-base transition-all"
-      style={{
-        background: disabled
-          ? "rgba(255,255,255,0.06)"
-          : "linear-gradient(135deg, #22C55E, #16a34a)",
-        border: disabled ? "1px solid rgba(255,255,255,0.08)" : "none",
-        color: disabled ? "rgba(255,255,255,0.3)" : "#FFFFFF",
-        boxShadow: disabled ? "none" : "0 6px 30px rgba(34,197,94,0.4)",
-        animation: disabled ? "none" : undefined,
-      }}
-    >
-      <WhatsAppIcon />
-      <span className={disabled ? "" : "btn-whatsapp-pulse"}>
-        {disabled ? "Escolha cidade e serviço primeiro" : "Chamar André no WhatsApp"}
-      </span>
-    </button>
-  );
-}
-
-function ChannelChips() {
-  const chips = [
-    { label: "Google", color: "#4285F4" },
-    { label: "Instagram", color: "#E1306C" },
-    { label: "Status", color: "#25D366" },
-    { label: "QR Code", color: "#FF6B35" },
-    { label: "WhatsApp", color: "#22C55E" },
-  ];
-
-  return (
-    <div className="glass-card p-5">
-      <p className="text-xs text-white/50 mb-3 text-center">
-        Funciona para Instagram, Status, Flyer com QR Code e base para Google.
-      </p>
-      <div className="flex flex-wrap justify-center gap-2">
-        {chips.map((chip) => (
-          <span
-            key={chip.label}
-            className="px-3 py-1.5 rounded-full text-xs font-semibold"
-            style={{
-              background: `${chip.color}18`,
-              border: `1px solid ${chip.color}40`,
-              color: chip.color,
-            }}
-          >
-            {chip.label}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
-export default function MaquinaDeCorridas() {
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
-  const [selectedService, setSelectedService] = useState<ServiceKey | null>(null);
+// ---- MAIN COMPONENT ----
+export default function MaquinaLocalCorridas() {
+  const [selectedCity, setSelectedCity] = useState("Tangara da Serra");
+  const [selectedService, setSelectedService] = useState("Passageiro");
   const [copied, setCopied] = useState(false);
+  const [showArte, setShowArte] = useState(false);
+  const [activeChipModal, setActiveChipModal] = useState<string | null>(null);
 
-  const message = buildMessage(selectedCity, selectedService);
-  const isReady = selectedCity !== null && selectedService !== null;
+  // Dynamic fields
+  const [nome, setNome] = useState("");
+  const [dia, setDia] = useState("");
+  const [horario, setHorario] = useState("");
+  const [pontoSaida, setPontoSaida] = useState("");
+  const [origem, setOrigem] = useState("");
+  const [destino, setDestino] = useState("");
+  const [tipoEncomenda, setTipoEncomenda] = useState("");
+  const [qtdPessoas, setQtdPessoas] = useState("");
 
-  function handleWhatsApp() {
-    if (!isReady) return;
-    const encoded = encodeURIComponent(message);
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, "_blank");
-  }
+  const cities = [
+    "Tangara da Serra", "Arenapolis", "Santo Afonso", "Nova Marilandia", "Nortelandia",
+  ];
 
-  async function handleCopy() {
+  const services = [
+    { name: "Passageiro", icon: <IconTaxi /> },
+    { name: "Encomenda", icon: <IconPackage /> },
+    { name: "Aeroporto", icon: <IconPlane /> },
+    { name: "Hospital / Consulta", icon: <IconHospital /> },
+  ];
+
+  const getMessage = () => {
+    const city = selectedCity;
+    const n = nome || "[Nome]";
+    const d = dia || "[Dia]";
+    const h = horario || "[Horario]";
+    const ps = pontoSaida || "[Ponto de saida]";
+
+    if (selectedService === "Passageiro") {
+      return `Ola Andre, quero reservar uma viagem para ${city}.\n\nServico: Passageiro\nDia: ${d}\nHorario: ${h}\nNome: ${n}\nPonto de saida: ${ps}`;
+    }
+    if (selectedService === "Encomenda") {
+      const or = origem || "[Origem]";
+      const de = destino || "[Destino]";
+      const te = tipoEncomenda || "[Tipo]";
+      return `Ola Andre, quero enviar uma encomenda para ${city}.\n\nServico: Encomenda\nOrigem: ${or}\nDestino: ${de}\nTipo: ${te}\nNome: ${n}`;
+    }
+    if (selectedService === "Aeroporto") {
+      const qp = qtdPessoas || "[Qtd]";
+      return `Ola Andre, quero uma viagem para o aeroporto.\n\nDestino: ${city}\nDia: ${d}\nHorario: ${h}\nQuantidade de pessoas: ${qp}\nNome: ${n}`;
+    }
+    if (selectedService === "Hospital / Consulta") {
+      return `Ola Andre, quero reservar uma viagem para consulta.\n\nCidade: ${city}\nDia: ${d}\nHorario da consulta: ${h}\nNome: ${n}\nPonto de saida: ${ps}`;
+    }
+    return "";
+  };
+
+  const message = getMessage();
+  const whatsappLink = `https://wa.me/5565996595006?text=${encodeURIComponent(message)}`;
+
+  const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(message);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // fallback silencioso
-    }
-  }
+    } catch { /* noop */ }
+  };
+
+  const handleCityChange = (city: string) => {
+    setSelectedCity(city);
+  };
+
+  const handleServiceChange = (svc: string) => {
+    setSelectedService(svc);
+    // Reset fields when service changes
+    setNome(""); setDia(""); setHorario(""); setPontoSaida("");
+    setOrigem(""); setDestino(""); setTipoEncomenda(""); setQtdPessoas("");
+  };
+
+  // Dynamic fields renderer
+  const renderFields = () => {
+    if (selectedService === "Passageiro") return (
+      <>
+        <Field label="Seu nome" value={nome} onChange={setNome} placeholder="Ex: Maria Silva" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <Field label="Dia" value={dia} onChange={setDia} placeholder="Ex: Segunda" />
+          <Field label="Horario" value={horario} onChange={setHorario} type="time" placeholder="--:--" />
+        </div>
+        <Field label="Ponto de saida" value={pontoSaida} onChange={setPontoSaida} placeholder="Ex: Praca Central" />
+      </>
+    );
+    if (selectedService === "Encomenda") return (
+      <>
+        <Field label="Seu nome" value={nome} onChange={setNome} placeholder="Ex: Maria Silva" />
+        <Field label="Origem (de onde sai)" value={origem} onChange={setOrigem} placeholder="Ex: Arenapolis" />
+        <Field label="Destino (para onde vai)" value={destino} onChange={setDestino} placeholder="Ex: Tangara da Serra" />
+        <Field label="Tipo de encomenda" value={tipoEncomenda} onChange={setTipoEncomenda} placeholder="Ex: Caixa pequena" />
+      </>
+    );
+    if (selectedService === "Aeroporto") return (
+      <>
+        <Field label="Seu nome" value={nome} onChange={setNome} placeholder="Ex: Maria Silva" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <Field label="Dia" value={dia} onChange={setDia} placeholder="Ex: Sexta" />
+          <Field label="Horario do voo" value={horario} onChange={setHorario} type="time" placeholder="--:--" />
+        </div>
+        <Field label="Quantidade de pessoas" value={qtdPessoas} onChange={setQtdPessoas} type="number" placeholder="Ex: 2" />
+      </>
+    );
+    if (selectedService === "Hospital / Consulta") return (
+      <>
+        <Field label="Seu nome" value={nome} onChange={setNome} placeholder="Ex: Maria Silva" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <Field label="Dia" value={dia} onChange={setDia} placeholder="Ex: Terca" />
+          <Field label="Horario da consulta" value={horario} onChange={setHorario} type="time" placeholder="--:--" />
+        </div>
+        <Field label="Ponto de saida" value={pontoSaida} onChange={setPontoSaida} placeholder="Ex: Rua das Flores, 10" />
+      </>
+    );
+    return null;
+  };
+
+  // Check if all fields are filled (for CTA state)
+  const isReady = nome.trim().length > 0;
 
   return (
-    <div className="mesh-bg min-h-screen flex items-start justify-center py-6 px-4">
-      {/* Container simulando mini app */}
-      <div className="w-full max-w-sm flex flex-col gap-4">
-
-        {/* ── Hero ─────────────────────────────────────────────────── */}
-        <div className="text-center pt-2 pb-1">
-          {/* Logo / avatar */}
-          <div className="relative inline-flex mb-4">
-            <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center"
-              style={{
-                background: "linear-gradient(135deg, #006BFF, #003B8F)",
-                boxShadow: "0 8px 32px rgba(0,107,255,0.5)",
-              }}
-            >
-              <CarIcon />
-            </div>
-            <span
-              className="absolute -top-1 -right-1 w-4 h-4 rounded-full border-2"
-              style={{ background: "#22C55E", borderColor: "#111111" }}
-            />
-          </div>
-
-          <HeroBadge />
-
-          <h1
-            className="mt-3 text-2xl font-black tracking-tight leading-tight"
+    <>
+      {/* ---- MODAL DA ARTE ---- */}
+      {showArte && (
+        <div
+          onClick={() => setShowArte(false)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 9999,
+            background: "rgba(0,0,0,0.96)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "16px",
+            cursor: "zoom-out",
+          }}
+        >
+          <button
+            onClick={() => setShowArte(false)}
             style={{
-              background: "linear-gradient(135deg, #FFFFFF 60%, rgba(255,255,255,0.6))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              position: "absolute", top: "16px", right: "16px",
+              background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: "50%", width: "44px", height: "44px",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#fff", cursor: "pointer",
             }}
           >
-            Máquina Local<br />de Corridas
-          </h1>
-
-          <p className="mt-1 text-sm font-semibold" style={{ color: "#006BFF" }}>
-            Andrezinho Uber · Motorista Particular
-          </p>
-          <p className="mt-1 text-xs text-white/45 px-4 leading-relaxed">
-            Escolha a cidade, selecione o serviço e chame o André com a mensagem pronta.
-          </p>
-          <p className="mt-0.5 text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
-            Uber · Encomendas · Viagens
-          </p>
+            <IconClose />
+          </button>
+          <img
+            src="/arte-demo1.png"
+            alt="Arte - Maquina Local de Corridas"
+            style={{ maxWidth: "100%", maxHeight: "100vh", objectFit: "contain", borderRadius: "12px" }}
+            onClick={e => e.stopPropagation()}
+          />
         </div>
+      )}
 
-        {/* ── Horários ─────────────────────────────────────────────── */}
-        <ScheduleBlock />
+      {/* ---- MODAL DOS CHIPS ---- */}
+      {activeChipModal && (
+        <div
+          onClick={() => setActiveChipModal(null)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 9998,
+            background: "rgba(0,0,0,0.85)",
+            backdropFilter: "blur(8px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "24px",
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: "rgba(15, 23, 42, 0.95)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "24px",
+              padding: "32px 24px",
+              width: "100%",
+              maxWidth: "380px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              gap: "16px",
+              boxShadow: "0 20px 60px rgba(0, 107, 255, 0.15)",
+              position: "relative"
+            }}
+          >
+            <button
+              onClick={() => setActiveChipModal(null)}
+              style={{
+                position: "absolute", top: "16px", right: "16px",
+                background: "transparent", border: "none", color: "#94A3B8",
+                cursor: "pointer", padding: "4px"
+              }}
+            >
+              <IconClose />
+            </button>
 
-        {/* ── Cidades ──────────────────────────────────────────────── */}
-        <CityCard cities={CITIES} selected={selectedCity} onSelect={setSelectedCity} />
+            {activeChipModal === "QR Code" && (
+              <>
+                <h3 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>QR Code para Panfletos</h3>
+                <p style={{ fontSize: "14px", color: "#94A3B8", lineHeight: 1.5, marginBottom: "8px" }}>
+                  Cole este QR code no vidro do carro e em cartoes de visita. O cliente escaneia e cai direto neste seu app de reservas!
+                </p>
+                <div style={{ background: "#fff", padding: "16px", borderRadius: "16px" }}>
+                  <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(whatsappLink)}&color=000000`} alt="QR Code" style={{ display: "block", width: "200px", height: "200px" }} />
+                </div>
+              </>
+            )}
 
-        {/* ── Serviços ─────────────────────────────────────────────── */}
-        <ServiceCard services={SERVICES} selected={selectedService} onSelect={setSelectedService} />
+            {activeChipModal === "Instagram" && (
+              <>
+                <h3 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>Link na Bio</h3>
+                <p style={{ fontSize: "14px", color: "#94A3B8", lineHeight: 1.5 }}>
+                  Adicione o link do seu app na bio do Instagram. Seus seguidores viram passageiros com apenas 1 clique!
+                </p>
+                <div style={{ width: "100%", background: "rgba(0,0,0,0.4)", borderRadius: "12px", padding: "16px", marginTop: "8px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                  <p style={{ color: "#fff", fontWeight: 600, fontSize: "14px", marginBottom: "4px" }}>@andrezinho_uber</p>
+                  <p style={{ color: "#006BFF", fontSize: "14px" }}>andrezinho-uber.app</p>
+                </div>
+              </>
+            )}
 
-        {/* ── Mensagem Preview ─────────────────────────────────────── */}
-        <MessagePreviewCard message={message} onCopy={handleCopy} copied={copied} />
+            {activeChipModal === "Google" && (
+              <>
+                <h3 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>Base para Google</h3>
+                <p style={{ fontSize: "14px", color: "#94A3B8", lineHeight: 1.5 }}>
+                  Cadastre-se no Google Meu Negocio. Quando pesquisarem "Motorista em Tangara", acham voce e clicam direto no seu app.
+                </p>
+                <div style={{ width: "100%", background: "rgba(0,0,0,0.4)", borderRadius: "12px", padding: "16px", marginTop: "8px", border: "1px solid rgba(255,255,255,0.05)", textAlign: "left" }}>
+                  <p style={{ color: "#fff", fontWeight: 600, fontSize: "15px", marginBottom: "2px" }}>Andrezinho Uber</p>
+                  <p style={{ color: "#FACC15", fontSize: "12px", marginBottom: "8px" }}>&#9733;&#9733;&#9733;&#9733;&#9733; 5.0 (42)</p>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <span style={{ padding: "6px 12px", background: "#006BFF", borderRadius: "100px", fontSize: "12px", color: "#fff", fontWeight: 600 }}>Fazer reserva</span>
+                  </div>
+                </div>
+              </>
+            )}
 
-        {/* ── Botão WhatsApp ────────────────────────────────────────── */}
-        <WhatsAppButton onClick={handleWhatsApp} disabled={!isReady} />
+            {(activeChipModal === "WhatsApp" || activeChipModal === "Status") && (
+              <>
+                <h3 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>Compartilhe Facil</h3>
+                <p style={{ fontSize: "14px", color: "#94A3B8", lineHeight: 1.5 }}>
+                  Mande o link do seu app nas listas de transmissao e poste no Status. Acabe com as perguntas repetidas!
+                </p>
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" style={{ width: "100%", padding: "14px", background: "#22C55E", borderRadius: "12px", color: "#fff", textDecoration: "none", fontWeight: 700, marginTop: "8px" }}>
+                  Testar envio no WhatsApp
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
-        {/* ── Chips de canais ───────────────────────────────────────── */}
-        <ChannelChips />
+      {/* ---- BOTÃO FLUTUANTE: VER ARTE ---- */}
+      <button
+        onClick={() => setShowArte(true)}
+        style={{
+          position: "fixed", bottom: "24px", right: "16px", zIndex: 999,
+          background: "linear-gradient(135deg, #006BFF, #003B8F)",
+          border: "1px solid rgba(255,255,255,0.15)",
+          borderRadius: "100px",
+          color: "#fff",
+          padding: "12px 20px",
+          fontSize: "13px", fontWeight: 700,
+          display: "flex", alignItems: "center", gap: "8px",
+          cursor: "pointer",
+          boxShadow: "0 8px 24px rgba(0,107,255,0.4)",
+          transition: "all 0.2s ease",
+        }}
+      >
+        <IconPresent />
+        Ver Apresentacao
+      </button>
 
-        {/* Footer */}
-        <p className="text-center text-xs text-white/20 pb-4">
-          © 2025 Andrezinho Uber · Tangará da Serra – MT
-        </p>
+      {/* ---- APP ---- */}
+      <div className="app-wrapper">
+        <div className="app-container">
+
+          {/* HEADER */}
+          <header className="app-header">
+            <div className="header-profile">
+              <div className="header-avatar">
+                <img src="/logo-andre-luiz-uber.webp" alt="Andrezinho Uber" width={64} height={64} />
+              </div>
+              <div className="header-info">
+                <h1 className="header-name">Andrezinho Uber</h1>
+                <p className="header-role">Motorista Particular</p>
+                <p className="header-services">Uber &bull; Encomendas &bull; Viagens</p>
+                <span className="badge-online">
+                  <span className="badge-dot" />
+                  Online para reservas
+                </span>
+              </div>
+            </div>
+            <p className="header-subtitle">
+              Preencha os dados abaixo e chame o Andre com a mensagem ja pronta - sem precisar digitar nada no WhatsApp.
+            </p>
+          </header>
+
+          {/* HORARIOS */}
+          <section className="card">
+            <div className="card-title"><IconClock />Horarios de saida</div>
+            <div className="schedule-grid">
+              <div className="schedule-item"><span className="schedule-time">05h20</span><span className="schedule-label">Saida manha</span></div>
+              <div className="schedule-item"><span className="schedule-time">12h00</span><span className="schedule-label">Retorno manha</span></div>
+              <div className="schedule-item"><span className="schedule-time">13h00</span><span className="schedule-label">Saida tarde</span></div>
+              <div className="schedule-item"><span className="schedule-time">16h30</span><span className="schedule-label">Retorno tarde</span></div>
+            </div>
+            <p className="schedule-days">Segunda a sabado</p>
+          </section>
+
+          {/* CIDADES */}
+          <section className="card">
+            <div className="card-title"><IconLocation />1. Para onde voce vai?</div>
+            <div className="options-list">
+              {cities.map(city => (
+                <button
+                  key={city}
+                  className={`option-btn${selectedCity === city ? " selected" : ""}`}
+                  onClick={() => handleCityChange(city)}
+                >
+                  {city}
+                  <span className="chevron"><IconChevron /></span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* SERVICOS */}
+          <section className="card">
+            <div className="card-title"><IconPerson />2. O que voce precisa?</div>
+            <div className="options-list">
+              {services.map(svc => (
+                <button
+                  key={svc.name}
+                  className={`option-btn${selectedService === svc.name ? " selected" : ""}`}
+                  onClick={() => handleServiceChange(svc.name)}
+                >
+                  {svc.icon}
+                  {svc.name}
+                  <span className="chevron"><IconChevron /></span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* MENSAGEM PRONTA (com inputs inteligentes) */}
+          <section className="card">
+            <div className="card-title"><IconDoc />3. Seus dados para a viagem</div>
+            
+            {/* Inputs dinâmicos */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {renderFields()}
+            </div>
+
+            {/* Separador */}
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", margin: "4px 0" }} />
+
+            {/* Preview da mensagem */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <span style={{ fontSize: "11px", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Preview - mensagem que sera enviada
+              </span>
+              <div className="message-preview">{message}</div>
+              <button className={`btn-copy${copied ? " copied" : ""}`} onClick={handleCopy}>
+                <IconCopy />
+                {copied ? "Copiado!" : "Copiar mensagem"}
+              </button>
+            </div>
+          </section>
+
+          {/* CTA WHATSAPP */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-whatsapp"
+              style={!isReady ? { opacity: 0.6, pointerEvents: "none" } : {}}
+            >
+              <IconWhatsApp />
+              {isReady ? "Chamar Andre no WhatsApp" : "Preencha seu nome para continuar"}
+            </a>
+            {!isReady && (
+              <p style={{ textAlign: "center", fontSize: "12px", color: "#64748B" }}>
+                Digite seu nome na secao acima para ativar o botao
+              </p>
+            )}
+          </div>
+
+          {/* FOOTER CHIPS */}
+          <div className="footer-chips" style={{ paddingBottom: "80px" }}>
+            {["Google", "Instagram", "Status", "QR Code", "WhatsApp"].map(chip => (
+              <button
+                key={chip}
+                className="chip"
+                onClick={() => setActiveChipModal(chip)}
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 }

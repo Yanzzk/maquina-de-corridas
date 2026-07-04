@@ -9,14 +9,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Máquina Local de Corridas | Andrezinho Uber",
-  description:
-    "Rotas, horários e reservas no WhatsApp em um só lugar. Motorista particular para Tangará da Serra, Arenápolis e região.",
-  keywords:
-    "Andrezinho Uber, motorista particular, Tangará da Serra, Arenápolis, transporte regional",
+  title: "Maquina Local de Corridas | Andrezinho Uber",
+  description: "Rotas, horarios e reservas no WhatsApp em um so lugar. Motorista particular para Tangara da Serra, Arenapolis e regiao.",
+  keywords: "Andrezinho Uber, motorista particular, Tangara da Serra, Arenapolis, transporte regional",
   openGraph: {
-    title: "Máquina Local de Corridas | Andrezinho Uber",
-    description: "Escolha a cidade, selecione o serviço e chame o André com a mensagem pronta.",
+    title: "Maquina Local de Corridas | Andrezinho Uber",
+    description: "Escolha a cidade, selecione o servico e chame o Andre com a mensagem pronta.",
     type: "website",
   },
 };
