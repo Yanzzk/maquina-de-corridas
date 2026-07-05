@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ---- ICONS ----
 const IconLocation = () => (
@@ -89,6 +89,18 @@ export default function MaquinaLocalCorridas() {
   const [copied, setCopied] = useState(false);
   const [showArte, setShowArte] = useState(false);
   const [activeChipModal, setActiveChipModal] = useState<string | null>(null);
+  const [showProfilePhoto, setShowProfilePhoto] = useState(false);
+
+  useEffect(() => {
+    if (showArte || activeChipModal || showProfilePhoto) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showArte, activeChipModal, showProfilePhoto]);
 
   // Dynamic fields
   const [nome, setNome] = useState("");
@@ -240,6 +252,39 @@ export default function MaquinaLocalCorridas() {
         </div>
       )}
 
+      {/* ---- MODAL DA FOTO DE PERFIL ---- */}
+      {showProfilePhoto && (
+        <div
+          onClick={() => setShowProfilePhoto(false)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 9999,
+            background: "rgba(0,0,0,0.96)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "16px",
+            cursor: "zoom-out",
+          }}
+        >
+          <button
+            onClick={() => setShowProfilePhoto(false)}
+            style={{
+              position: "absolute", top: "16px", right: "16px",
+              background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: "50%", width: "44px", height: "44px",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#fff", cursor: "pointer",
+            }}
+          >
+            <IconClose />
+          </button>
+          <img
+            src="/logo-andre-luiz-uber.webp"
+            alt="Andrezinho Uber"
+            style={{ maxWidth: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: "50%" }}
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
+      )}
+
       {/* ---- MODAL DOS CHIPS ---- */}
       {activeChipModal && (
         <div
@@ -365,7 +410,7 @@ export default function MaquinaLocalCorridas() {
           {/* HEADER */}
           <header className="app-header">
             <div className="header-profile">
-              <div className="header-avatar">
+              <div className="header-avatar" onClick={() => setShowProfilePhoto(true)} style={{ cursor: "pointer" }}>
                 <img src="/logo-andre-luiz-uber.webp" alt="Andrezinho Uber" width={64} height={64} />
               </div>
               <div className="header-info">
