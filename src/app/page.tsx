@@ -113,26 +113,26 @@ export default function MaquinaLocalCorridas() {
 
   const getMessage = () => {
     const city = selectedCity;
-    const n = nome || "[Nome]";
-    const d = dia || "[Dia]";
-    const h = horario || "[Horario]";
-    const ps = pontoSaida || "[Ponto de saida]";
+    const n = nome ? `*${nome}*` : "[Nome]";
+    const d = dia ? `*${dia}*` : "[Dia]";
+    const h = horario ? `*${horario}*` : "[Horário]";
+    const ps = pontoSaida ? `*${pontoSaida}*` : "[Ponto de saída]";
 
     if (selectedService === "Passageiro") {
-      return `Ola Andre, quero reservar uma viagem para ${city}.\n\nServico: Passageiro\nDia: ${d}\nHorario: ${h}\nNome: ${n}\nPonto de saida: ${ps}`;
+      return `Olá André, quero reservar uma viagem para *${city}*.\n\nServiço: *Passageiro*\nDia: ${d}\nHorário: ${h}\nNome: ${n}\nPonto de saída: ${ps}`;
     }
     if (selectedService === "Encomenda") {
-      const or = origem || "[Origem]";
-      const de = destino || "[Destino]";
-      const te = tipoEncomenda || "[Tipo]";
-      return `Ola Andre, quero enviar uma encomenda para ${city}.\n\nServico: Encomenda\nOrigem: ${or}\nDestino: ${de}\nTipo: ${te}\nNome: ${n}`;
+      const or = origem ? `*${origem}*` : "[Origem]";
+      const de = destino ? `*${destino}*` : "[Destino]";
+      const te = tipoEncomenda ? `*${tipoEncomenda}*` : "[Tipo]";
+      return `Olá André, quero enviar uma encomenda para *${city}*.\n\nServiço: *Encomenda*\nOrigem: ${or}\nDestino: ${de}\nTipo: ${te}\nNome: ${n}`;
     }
     if (selectedService === "Aeroporto") {
-      const qp = qtdPessoas || "[Qtd]";
-      return `Ola Andre, quero uma viagem para o aeroporto.\n\nDestino: ${city}\nDia: ${d}\nHorario: ${h}\nQuantidade de pessoas: ${qp}\nNome: ${n}`;
+      const qp = qtdPessoas ? `*${qtdPessoas}*` : "[Qtd]";
+      return `Olá André, quero uma viagem para o aeroporto.\n\nDestino: *${city}*\nDia: ${d}\nHorário: ${h}\nQuantidade de pessoas: ${qp}\nNome: ${n}`;
     }
     if (selectedService === "Hospital / Consulta") {
-      return `Ola Andre, quero reservar uma viagem para consulta.\n\nCidade: ${city}\nDia: ${d}\nHorario da consulta: ${h}\nNome: ${n}\nPonto de saida: ${ps}`;
+      return `Olá André, quero reservar uma viagem para consulta.\n\nCidade: *${city}*\nDia: ${d}\nHorário da consulta: ${h}\nNome: ${n}\nPonto de saída: ${ps}`;
     }
     return "";
   };

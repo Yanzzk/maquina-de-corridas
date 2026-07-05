@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "Maquina Local de Corridas | Andrezinho Uber",
   description: "Rotas, horarios e reservas no WhatsApp em um so lugar. Motorista particular para Tangara da Serra, Arenapolis e regiao.",
   keywords: "Andrezinho Uber, motorista particular, Tangara da Serra, Arenapolis, transporte regional",
+  icons: {
+    icon: "/logo-andre-luiz-uber.webp",
+  },
   openGraph: {
     title: "Maquina Local de Corridas | Andrezinho Uber",
     description: "Escolha a cidade, selecione o servico e chame o Andre com a mensagem pronta.",
